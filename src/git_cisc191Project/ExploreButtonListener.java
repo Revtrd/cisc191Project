@@ -9,9 +9,9 @@ public class ExploreButtonListener implements ActionListener
 	private ProjectView projectView;
 	private ExploreButton exploreButton;
 
-	public ExploreButtonListener(ProjectModel model, ProjectView projectView,
-			ExploreButton button)
+	public ExploreButtonListener(ProjectModel model, ProjectView projectView, ExploreButton button)
 	{
+		//sets this projectmodel/projectview/explorebutton to the given project model, project view, button
 		this.projectModel = model;
 		this.projectView = projectView;
 		this.exploreButton = button;
@@ -19,16 +19,98 @@ public class ExploreButtonListener implements ActionListener
 	}
 
 	@Override
+	//when an action takes place
 	public void actionPerformed(ActionEvent e)
 	{
+		//sets the button message and event message to be blank
+		String buttonMessage = "";
+		String eventMessage = "";
+		//checks if a treasure was found
 		boolean treasureFound = projectModel.treasureAt(exploreButton.getRow(), exploreButton.getColumn());
 		if(treasureFound) {
-			exploreButton.setText("Treasure Found");
+			//sets the button message to state, treasure found
+			buttonMessage = "Treasure Found";
+			//sets the event message to state what happened
+			eventMessage = "Treasure Found, Total Treasure: " + projectModel.getTreasuresFound();
+		//if treasure was not found
 		} else {
-			exploreButton.setText("No Treasure");
-		} //IF ELSE VARIOUS EVENTS
+			//creates a random number between 0 and 3
+			int randomEvent = (int)(Math.random()*4);
+			//switches based on the random number
+			switch(randomEvent) {
+				//if it is 0
+				case 0:
+					//if the amount of treasures the player has is greater than 0
+					if(projectModel.getTreasuresFound() > 0) {
+						//random number is generated between 1 and 11
+						int randomMimicAmount = (int)(Math.random()*10) + 1;
+						//sets treasures taken to the amount of treasures the player has
+						int treasureTaken = projectModel.getTreasuresFound();
+						//reduces the player treasures to zero
+						projectModel.reduceTreasuresFound(treasureTaken);
+						//mimic does damage based on random number + treasures taken
+						projectModel.reduceHealth(treasureTaken + randomMimicAmount);
+						//sets the button to state that it was a mimic
+						buttonMessage = "Mimic";
+						//sets the event message to state what happened
+						eventMessage = "Mimic Encounter! All Treasures Taken, Health Reduced By: " + treasureTaken + " + " + randomMimicAmount;
+					} else {
+						//if the player does not have more than 0 treasure
+						//button message states that it is a mimic
+						buttonMessage = "Mimic";
+						//mimic does not attack since there is no treasure
+						eventMessage = "Mimic Encounter! No Treasures Had";
+					}
+					//stops this case
+					break;
+				//if it is 1
+				case 1:
+					//sets a random number from 1 to 11 | 1 to 5
+					int randomGoblinAmount = (int)(Math.random()*10) + 1;
+					int randomGoblinLootAmount = (int)(Math.random()*4) + 1;
+					//reduces the player health by random number
+					projectModel.reduceHealth(randomGoblinAmount);
+					//player gains treaure based on a random number
+					projectModel.increaseTreasuresFound(randomGoblinLootAmount);
+					//Button is changed to state "goblin"
+					buttonMessage = "Goblin";
+					//sets the event message to state what happened
+					eventMessage = "Goblin Encounter! Reduced Health By: " + randomGoblinAmount + ", Looted " + randomGoblinLootAmount + " Treasure";
+					//stops this case
+					break;
+				//if it is 2
+				case 2:
+					//creates a random number between 15 and 25
+					int randomTrapAmount = (int)(Math.random()*10) + 15;
+					//reduces health based off random number
+					projectModel.reduceHealth(randomTrapAmount);
+					//button states that it was a trap case
+					buttonMessage = "Trap";
+					//sets the event message to state what happened
+					eventMessage = "Trap Encounter! Reduced Health By: " + randomTrapAmount;
+					//stops this case
+					break;
+				//if it was 3
+				case 3:
+					//creates a random number between 5 and 25
+					int randomPotionAmount = (int)(Math.random()*20) + 5;
+					//restores player health based off that random number
+					projectModel.increaseHealth(randomPotionAmount);
+					//the button states potion was this case
+					buttonMessage = "Potion";
+					//sets the event message to state what happened
+					eventMessage = "Potion Found! Increase Health By: " + randomPotionAmount;
+					//stops this case
+					break;
+			}
+		} 
+		
+		//sets the explore button text to the button message
+		exploreButton.setText(buttonMessage);
+		//when clicked, a button is turned off
 		exploreButton.setEnabled(false);
-		projectView.updateUI();
+		//updates ui to display the event message
+		projectView.updateUI(eventMessage);
 	}
 
 }
