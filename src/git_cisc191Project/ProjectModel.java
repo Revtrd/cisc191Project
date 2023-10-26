@@ -8,6 +8,7 @@ public class ProjectModel
 	private int healthRemaining = 100;
 	private int treasureRemaining = 25;
 	private int treasuresFound = 0;
+	private int shieldCount;
 	
 	public ProjectModel()
 	{
@@ -62,6 +63,12 @@ public class ProjectModel
 		return treasureRemaining;
 	}
 	
+	public int getShieldCount()
+	{
+		//returns shield count
+		return shieldCount;
+	}
+	
 	public boolean dungeonWin()
 	{
 		//determines if the dungeon won
@@ -105,5 +112,18 @@ public class ProjectModel
 	public void increaseTreasuresFound(int amount) {
 		//increases treasure by the amount given
 		treasuresFound += amount;
+	}
+	
+	public void setShieldCount(int amount)
+	{
+		shieldCount += amount;
+	}
+	
+	public void decreaseSheildCount(int amount)
+	{
+		shieldCount -= amount;
+		if(shieldCount < 0) {
+			shieldCount = 0;
+		}
 	}
 }

@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,6 +20,13 @@ public class ProjectView extends JFrame
 	private JLabel instructionsLabel;
 	private JLabel treasureFoundLabel;
 	private ExploreButton[][] exploreButtons = new ExploreButton[ProjectModel.DIMENSION][ProjectModel.DIMENSION];
+	private JLabel goblinLegendLabel;
+	private JLabel mimicLegendLabel; 
+	private JLabel trapLegendLabel;
+	private JLabel potionLegendLabel;
+	private JLabel shieldLegendLabel;
+	private JLabel shieldInfoLabel;
+	private JLabel emptyLegendLabel;
 	
 	public ProjectView(ProjectModel model) {
 		//sets this model to model
@@ -33,11 +41,14 @@ public class ProjectView extends JFrame
 		setTitle("The Grand Hunt");
 		//sets the layout
 		setLayout(new BorderLayout());
-		//creates a new JPanel, grid and instructions panel
+		//creates a new JPanel, grid, instructions, and legend panel
 		JPanel gridPanel = new JPanel();
 		JPanel instructionsPanel = new JPanel();
+		JPanel legendPanel = new JPanel();
 		//sets the layout for the grid panel to be the size of the project model's dimensions
 		gridPanel.setLayout(new GridLayout(ProjectModel.DIMENSION, ProjectModel.DIMENSION));
+		//sets layout for the legendPanel
+		legendPanel.setLayout(new BoxLayout(legendPanel, BoxLayout.Y_AXIS));
 		//loops for the length of the model's rows and columns
 		for(int row = 0; row < ProjectModel.DIMENSION; row++) {
 			//loops for the length of the gonefishing models columns
@@ -66,22 +77,41 @@ public class ProjectView extends JFrame
 		messageLabel.setPreferredSize(new Dimension(500, 50));
 		//sets a treasure found label
 		treasureFoundLabel = new JLabel("Treasures Found: " + model.getTreasuresFound());
+		//sets a label for each event
+		goblinLegendLabel = new JLabel("Goblin - Decrease HP by 1-10, Gain 1-5 Treasure");
+		mimicLegendLabel = new JLabel("Mimic - Does Damage According to Your Treasures Found");
+		trapLegendLabel = new JLabel("Trap - Does 15-25 Damage");
+		potionLegendLabel = new JLabel("Potion - Restores 5-25 HP");
+		shieldLegendLabel = new JLabel("Shields - Negate One Encounter's Damage");
+		shieldInfoLabel = new JLabel("Shields: " + model.getShieldCount());
+		emptyLegendLabel = new JLabel("Empty - Nothing Happens, Continue");
 		//creates a JPanel called toppanel and infopanel
 		JPanel topPanel = new JPanel();
 		JPanel infoPanel = new JPanel();
 		//sets the top panel to have a flow layout
 		topPanel.setLayout(new FlowLayout());
+		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 		//adds the specified labels to the given JPanels
 		topPanel.add(healthLabel);
 		topPanel.add(treasureLabel);
 		infoPanel.add(messageLabel);
+		infoPanel.add(shieldInfoLabel);
 		topPanel.add(treasureFoundLabel);
 		instructionsPanel.add(instructionsLabel);
+		legendPanel.add(goblinLegendLabel);
+		legendPanel.add(mimicLegendLabel);
+		legendPanel.add(trapLegendLabel);
+		legendPanel.add(potionLegendLabel);
+		legendPanel.add(shieldLegendLabel);
+		legendPanel.add(emptyLegendLabel);
+		
+		
 		//sets the position for each jlabel
 		add(topPanel, BorderLayout.NORTH);
 		add(gridPanel, BorderLayout.CENTER);
 		add(instructionsPanel, BorderLayout.WEST);
 		add(infoPanel, BorderLayout.EAST);
+		add(legendPanel, BorderLayout.SOUTH);
 	}
 	
 	public static void main(String[] args)
@@ -96,6 +126,7 @@ public class ProjectView extends JFrame
 		treasureLabel.setText("Treasures Remaining: " + projectModel.getTreasureRemaining());
 		treasureFoundLabel.setText("Treasures Found: " + projectModel.getTreasuresFound());
 		messageLabel.setText("Game Message: " + eventMessage);
+		shieldInfoLabel.setText("Shields: " + projectModel.getShieldCount());
 		//calls out if the player loses
 		if(projectModel.dungeonWin()) {
 			messageLabel.setText("Game Message: Out of Health, You Lose!");

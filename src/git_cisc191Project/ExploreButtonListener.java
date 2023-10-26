@@ -35,13 +35,13 @@ public class ExploreButtonListener implements ActionListener
 		//if treasure was not found
 		} else {
 			//creates a random number between 0 and 3
-			int randomEvent = (int)(Math.random()*4);
+			int randomEvent = (int)(Math.random()*5);
 			//switches based on the random number
 			switch(randomEvent) {
 				//if it is 0
 				case 0:
-					//if the amount of treasures the player has is greater than 0
-					if(projectModel.getTreasuresFound() > 0) {
+					//if the amount of treasures the player has is greater than 0 and player doesnt have a shield
+					if(projectModel.getTreasuresFound() > 0 && projectModel.getShieldCount() == 0) {
 						//random number is generated between 1 and 11
 						int randomMimicAmount = (int)(Math.random()*10) + 1;
 						//sets treasures taken to the amount of treasures the player has
@@ -54,7 +54,15 @@ public class ExploreButtonListener implements ActionListener
 						buttonMessage = "Mimic";
 						//sets the event message to state what happened
 						eventMessage = "Mimic Encounter! All Treasures Taken, Health Reduced By: " + treasureTaken + " + " + randomMimicAmount;
-					} else {
+						//if player has shield
+					} else if(projectModel.getShieldCount()>0){
+						//button states that it was a mimic
+						buttonMessage = "Mimic";
+						//states that mimic was blocked
+						eventMessage = "Mimic Encounter! Mimic Blocked, Shield Lost!";
+						//decrease shield count
+						projectModel.decreaseSheildCount(1);
+					}else {
 						//if the player does not have more than 0 treasure
 						//button message states that it is a mimic
 						buttonMessage = "Mimic";
@@ -66,8 +74,9 @@ public class ExploreButtonListener implements ActionListener
 				//if it is 1
 				case 1:
 					//sets a random number from 1 to 11 | 1 to 5
-					int randomGoblinAmount = (int)(Math.random()*10) + 1;
+					int randomGoblinAmount = (int)(Math.random()*9) + 1;
 					int randomGoblinLootAmount = (int)(Math.random()*4) + 1;
+					if(projectModel.getShieldCount() == 0) {
 					//reduces the player health by random number
 					projectModel.reduceHealth(randomGoblinAmount);
 					//player gains treaure based on a random number
@@ -76,12 +85,20 @@ public class ExploreButtonListener implements ActionListener
 					buttonMessage = "Goblin";
 					//sets the event message to state what happened
 					eventMessage = "Goblin Encounter! Reduced Health By: " + randomGoblinAmount + ", Looted " + randomGoblinLootAmount + " Treasure";
+					}else if(projectModel.getShieldCount() == 0) {
+						//Button is changed to state "goblin"
+						buttonMessage = "Goblin";
+						eventMessage = "Goblin Encounter! Goblin Blocked, Shield Lost! Looted " + randomGoblinLootAmount + " Treasure";
+						projectModel.increaseTreasuresFound(randomGoblinLootAmount);
+						projectModel.decreaseSheildCount(1);
+					}
 					//stops this case
 					break;
 				//if it is 2
 				case 2:
 					//creates a random number between 15 and 25
 					int randomTrapAmount = (int)(Math.random()*10) + 15;
+					if(projectModel.getShieldCount() == 0) {
 					//reduces health based off random number
 					projectModel.reduceHealth(randomTrapAmount);
 					//button states that it was a trap case
@@ -89,6 +106,11 @@ public class ExploreButtonListener implements ActionListener
 					//sets the event message to state what happened
 					eventMessage = "Trap Encounter! Reduced Health By: " + randomTrapAmount;
 					//stops this case
+					}else if(projectModel.getShieldCount() > 0) {
+						buttonMessage = "Trap";
+						eventMessage = "Trap Encounter! Trap Blocked, Shield Lost!";
+						projectModel.decreaseSheildCount(1);
+					}
 					break;
 				//if it was 3
 				case 3:
@@ -100,6 +122,16 @@ public class ExploreButtonListener implements ActionListener
 					buttonMessage = "Potion";
 					//sets the event message to state what happened
 					eventMessage = "Potion Found! Increase Health By: " + randomPotionAmount;
+					//stops this case
+					break;
+				//if it was case 4
+				case 4:
+					//adds 1 to shield count
+					projectModel.setShieldCount(1);
+					//the button says shield
+					buttonMessage = "Shield";
+					//the event says that you found a shield
+					eventMessage = "Found A Shield!";
 					//stops this case
 					break;
 			}
