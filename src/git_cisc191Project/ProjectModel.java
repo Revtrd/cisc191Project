@@ -9,6 +9,7 @@ public class ProjectModel
 	private int treasureRemaining = 25;
 	private int treasuresFound = 0;
 	private int shieldCount;
+	private int swordCount;
 	
 	public ProjectModel()
 	{
@@ -69,6 +70,12 @@ public class ProjectModel
 		return shieldCount;
 	}
 	
+	public int getSwordCount()
+	{
+		//returns sword count
+		return swordCount;
+	}
+	
 	public boolean dungeonWin()
 	{
 		//determines if the dungeon won
@@ -116,14 +123,35 @@ public class ProjectModel
 	
 	public void setShieldCount(int amount)
 	{
+		//adds amount to shield count
 		shieldCount += amount;
 	}
 	
-	public void decreaseSheildCount(int amount)
+	public void decreaseShieldCount(int amount)
 	{
+		//decreases shield count
 		shieldCount -= amount;
+		//if shield count is already at or less than 0 after this
 		if(shieldCount < 0) {
+			//set shield count to 0
 			shieldCount = 0;
+		}
+	}
+	
+	public void setSwordCount(int amount)
+	{
+		//increase sword count by amount
+		swordCount += amount;
+	}
+	
+	public void decreaseSwordCount(int amount)
+	{
+		//decrease sword count by amount
+		swordCount -=amount;
+		//if sword count is less than 0 after this
+		if(swordCount<0) {
+			//set sword count to 0
+			swordCount = 0;
 		}
 	}
 }

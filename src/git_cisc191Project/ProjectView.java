@@ -26,12 +26,14 @@ public class ProjectView extends JFrame
 	private JLabel potionLegendLabel;
 	private JLabel shieldLegendLabel;
 	private JLabel shieldInfoLabel;
+	private JLabel swordLegendLabel;
+	private JLabel swordInfoLabel;
 	private JLabel emptyLegendLabel;
 	
 	public ProjectView(ProjectModel model) {
 		//sets this model to model
 		this.projectModel = model;
-		//creates a default opperation to close the frame
+		//creates a default operation to close the frame
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//packs the game on launch
 		pack();
@@ -51,7 +53,7 @@ public class ProjectView extends JFrame
 		legendPanel.setLayout(new BoxLayout(legendPanel, BoxLayout.Y_AXIS));
 		//loops for the length of the model's rows and columns
 		for(int row = 0; row < ProjectModel.DIMENSION; row++) {
-			//loops for the length of the gonefishing models columns
+			//loops for the length of the ProjectModel models columns
 			for(int col = 0; col < ProjectModel.DIMENSION; col++) {
 				//sets the explore button to the given row and column
 				ExploreButton button = new ExploreButton(row,col);
@@ -72,20 +74,22 @@ public class ProjectView extends JFrame
 		//creates an instructions label
 		instructionsLabel = new JLabel("Click on the buttons to explore the dungeon.");
 		//creates a message label
-		messageLabel = new JLabel("Game Message: ");
+		messageLabel = new JLabel("<html>Game Message: <br></html>");
 		//sets the message label's size
 		messageLabel.setPreferredSize(new Dimension(500, 50));
 		//sets a treasure found label
 		treasureFoundLabel = new JLabel("Treasures Found: " + model.getTreasuresFound());
 		//sets a label for each event
-		goblinLegendLabel = new JLabel("Goblin - Decrease HP by 1-10, Gain 1-5 Treasure");
-		mimicLegendLabel = new JLabel("Mimic - Does Damage According to Your Treasures Found");
+		goblinLegendLabel = new JLabel("Goblin - Decrease HP by 1-10, Gain 1-5 Treasure; Drops 1-10 Additional Treasure When Slain");
+		mimicLegendLabel = new JLabel("Mimic - If You Have Treasure, Does Damage According to Your Treasures Found + 1-10; Drops 5-25 Additional Treasure When Slain");
 		trapLegendLabel = new JLabel("Trap - Does 15-25 Damage");
 		potionLegendLabel = new JLabel("Potion - Restores 5-25 HP");
 		shieldLegendLabel = new JLabel("Shields - Negate One Encounter's Damage");
-		shieldInfoLabel = new JLabel("Shields: " + model.getShieldCount());
+		swordLegendLabel = new JLabel("Sword - Increase Loot Gained by After Enemy Encounter, If Player Has Shield, Upon Encounter Both Items are Used, Only Shield Gets Destroyed");
+		shieldInfoLabel = new JLabel("Shield Count: " + model.getShieldCount());
+		swordInfoLabel = new JLabel("Sword Count: " + model.getSwordCount());
 		emptyLegendLabel = new JLabel("Empty - Nothing Happens, Continue");
-		//creates a JPanel called toppanel and infopanel
+		//creates a JPanel called topPanel and infoPanel
 		JPanel topPanel = new JPanel();
 		JPanel infoPanel = new JPanel();
 		//sets the top panel to have a flow layout
@@ -96,6 +100,7 @@ public class ProjectView extends JFrame
 		topPanel.add(treasureLabel);
 		infoPanel.add(messageLabel);
 		infoPanel.add(shieldInfoLabel);
+		infoPanel.add(swordInfoLabel);
 		topPanel.add(treasureFoundLabel);
 		instructionsPanel.add(instructionsLabel);
 		legendPanel.add(goblinLegendLabel);
@@ -103,10 +108,11 @@ public class ProjectView extends JFrame
 		legendPanel.add(trapLegendLabel);
 		legendPanel.add(potionLegendLabel);
 		legendPanel.add(shieldLegendLabel);
+		legendPanel.add(swordLegendLabel);
 		legendPanel.add(emptyLegendLabel);
 		
 		
-		//sets the position for each jlabel
+		//sets the position for each jLabel
 		add(topPanel, BorderLayout.NORTH);
 		add(gridPanel, BorderLayout.CENTER);
 		add(instructionsPanel, BorderLayout.WEST);
@@ -125,8 +131,9 @@ public class ProjectView extends JFrame
 		healthLabel.setText("Health Remaining: " + projectModel.getHealthRemaining());
 		treasureLabel.setText("Treasures Remaining: " + projectModel.getTreasureRemaining());
 		treasureFoundLabel.setText("Treasures Found: " + projectModel.getTreasuresFound());
-		messageLabel.setText("Game Message: " + eventMessage);
-		shieldInfoLabel.setText("Shields: " + projectModel.getShieldCount());
+		messageLabel.setText("<html>Game Message:<br>" + eventMessage + "</html>");
+		shieldInfoLabel.setText("Shield Count: " + projectModel.getShieldCount());
+		swordInfoLabel.setText("Sword Count: " + projectModel.getSwordCount());
 		//calls out if the player loses
 		if(projectModel.dungeonWin()) {
 			messageLabel.setText("Game Message: Out of Health, You Lose!");
