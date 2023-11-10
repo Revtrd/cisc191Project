@@ -1,5 +1,6 @@
 package git_cisc191Project;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,6 +20,8 @@ public class ExploreButtonListener implements ActionListener
 	}
 
 	@Override
+	
+	
 	//when an action takes place
 	public void actionPerformed(ActionEvent e)
 	{
@@ -32,6 +35,8 @@ public class ExploreButtonListener implements ActionListener
 			buttonMessage = "Treasure Found";
 			//sets the event message to state what happened
 			eventMessage = "Treasure Found, Total Treasure: " + projectModel.getTreasuresFound();
+			//Shows the player they found treasure
+			exploreButton.setBackground(Color.YELLOW);
 		//if treasure was not found
 		} else {
 			//creates a random number between 0 and 5
@@ -54,6 +59,8 @@ public class ExploreButtonListener implements ActionListener
 						buttonMessage = "Mimic";
 						//sets the event message to state what happened
 						eventMessage = "Mimic Encounter! All Treasures Taken, Health Reduced By: " + treasureTaken + " + " + randomMimicAmount;
+						//Shows the player what happened was negative
+						exploreButton.setBackground(Color.RED);
 						//if player has shield and sword
 					} else if(projectModel.getShieldCount()>0 && projectModel.getSwordCount()>0) {
 						int randomMimicLootAmount = (int)(Math.random()*20) + 5;
@@ -65,6 +72,8 @@ public class ExploreButtonListener implements ActionListener
 						projectModel.decreaseShieldCount(1);
 						//increase treasures found based on mimic loot amount
 						projectModel.increaseTreasuresFound(randomMimicLootAmount);
+						//Shows the player what happened had benefits
+						exploreButton.setBackground(Color.BLUE);
 					//if player has shield but not sword
 					} else if(projectModel.getShieldCount()>0 && projectModel.getSwordCount()==0){
 						//button states that it was a mimic
@@ -73,6 +82,8 @@ public class ExploreButtonListener implements ActionListener
 						eventMessage = "Mimic Encounter! Mimic Blocked, Shield Lost!";
 						//decrease shield count
 						projectModel.decreaseShieldCount(1);
+						//Shows the player what happened was blocked
+						exploreButton.setBackground(Color.PINK);
 					//if player had sword but not shield
 					}else if(projectModel.getSwordCount()>0 && projectModel.getShieldCount()==0) {
 						//random number between 1 and 10
@@ -93,12 +104,16 @@ public class ExploreButtonListener implements ActionListener
 						eventMessage = "Mimic Encounter! Mimic Slain, Sword Lost! Health Reduced By: " + treasureTaken + " + " + randomMimicAmount + " Loot Obtained: " + randomMimicLootAmount;
 						//reduces health
 						projectModel.reduceHealth(treasureTaken + randomMimicAmount);
+						//Shows the player what happened was beneficial
+						exploreButton.setBackground(Color.BLUE);
 					}else {
 						//if the player does not have more than 0 treasure
 						//button message states that it is a mimic
 						buttonMessage = "Mimic";
 						//mimic does not attack since there is no treasure
 						eventMessage = "Mimic Encounter! No Treasures Had";
+						//Shows the player that nothing bad happened
+						exploreButton.setBackground(Color.GRAY);
 					}
 					//stops this case
 					break;
@@ -108,15 +123,17 @@ public class ExploreButtonListener implements ActionListener
 					int randomGoblinAmount = (int)(Math.random()*9) + 1;
 					int randomGoblinLootAmount = (int)(Math.random()*4) + 1;
 					if(projectModel.getShieldCount() == 0 && projectModel.getSwordCount() == 0) {
-					//reduces the player health by random number
-					projectModel.reduceHealth(randomGoblinAmount);
-					//player gains treasure based on a random number
-					projectModel.increaseTreasuresFound(randomGoblinLootAmount);
-					//Button is changed to state "goblin"
-					buttonMessage = "Goblin";
-					//sets the event message to state what happened
-					eventMessage = "Goblin Encounter! Reduced Health By: " + randomGoblinAmount + ", Looted " + randomGoblinLootAmount + " Treasure";
-					//if player has shield but no sword
+						//reduces the player health by random number
+						projectModel.reduceHealth(randomGoblinAmount);
+						//player gains treasure based on a random number
+						projectModel.increaseTreasuresFound(randomGoblinLootAmount);
+						//Button is changed to state "goblin"
+						buttonMessage = "Goblin";
+						//sets the event message to state what happened
+						eventMessage = "Goblin Encounter! Reduced Health By: " + randomGoblinAmount + ", Looted " + randomGoblinLootAmount + " Treasure";
+						//Shows the player what happened was bad
+						exploreButton.setBackground(Color.RED);
+						//if player has shield but no sword
 					}else if(projectModel.getShieldCount() > 0 && projectModel.getSwordCount() > 0){
 						int randomGoblinAdditionalLootAmount = (int)(Math.random()*9) + 1;
 						//Button is changed to state "goblin"
@@ -129,6 +146,8 @@ public class ExploreButtonListener implements ActionListener
 						projectModel.increaseTreasuresFound(totalGoblinLoot);
 						//decrease shield count
 						projectModel.decreaseShieldCount(1);
+						//Shows the player what happened was good
+						exploreButton.setBackground(Color.GREEN);
 					}else if(projectModel.getShieldCount() > 0 && projectModel.getSwordCount() == 0) {
 						//Button is changed to state "goblin"
 						buttonMessage = "Goblin";
@@ -138,6 +157,8 @@ public class ExploreButtonListener implements ActionListener
 						projectModel.increaseTreasuresFound(randomGoblinLootAmount);
 						//decreases shield count
 						projectModel.decreaseShieldCount(1);
+						//Shows the player what happened was blocked
+						exploreButton.setBackground(Color.PINK);
 					//if player has sword but no shield
 					}else if(projectModel.getSwordCount()>0 && projectModel.getShieldCount()==0) {
 						int randomGoblinAdditionalLootAmount = (int)(Math.random()*9) + 1;
@@ -152,7 +173,8 @@ public class ExploreButtonListener implements ActionListener
 						projectModel.increaseTreasuresFound(totalGoblinLoot);
 						//reduces Sword Count
 						projectModel.decreaseSwordCount(1);
-
+						//Shows the player what happened was beneficial
+						exploreButton.setBackground(Color.BLUE);
 					}else {
 						
 					}
@@ -163,18 +185,22 @@ public class ExploreButtonListener implements ActionListener
 					//creates a random number between 15 and 25
 					int randomTrapAmount = (int)(Math.random()*10) + 15;
 					if(projectModel.getShieldCount() == 0) {
-					//reduces health based off random number
-					projectModel.reduceHealth(randomTrapAmount);
-					//button states that it was a trap case
-					buttonMessage = "Trap";
-					//sets the event message to state what happened
-					eventMessage = "Trap Encounter! Reduced Health By: " + randomTrapAmount;
-					//stops this case
+						//reduces health based off random number
+						projectModel.reduceHealth(randomTrapAmount);
+						//button states that it was a trap case
+						buttonMessage = "Trap";
+						//sets the event message to state what happened
+						eventMessage = "Trap Encounter! Reduced Health By: " + randomTrapAmount;
+						//Shows the player what happened was bad
+						exploreButton.setBackground(Color.RED);
 					}else if(projectModel.getShieldCount() > 0) {
 						buttonMessage = "Trap";
 						eventMessage = "Trap Encounter! Trap Blocked, Shield Lost!";
 						projectModel.decreaseShieldCount(1);
+						//Shows the player what happened was blocked
+						exploreButton.setBackground(Color.PINK);
 					}
+					//stops this case
 					break;
 				//if it was 3
 				case 3:
@@ -186,6 +212,8 @@ public class ExploreButtonListener implements ActionListener
 					buttonMessage = "Potion";
 					//sets the event message to state what happened
 					eventMessage = "Potion Found! Increase Health By: " + randomPotionAmount;
+					//Shows the player what happened was good
+					exploreButton.setBackground(Color.GREEN);
 					//stops this case
 					break;
 				//if it was case 4
@@ -196,6 +224,8 @@ public class ExploreButtonListener implements ActionListener
 					buttonMessage = "Shield";
 					//the event says that you found a shield
 					eventMessage = "Found A Shield!";
+					//Shows the player what happened was good
+					exploreButton.setBackground(Color.GREEN);
 					//stops this case
 					break;
 				//if the case was 5
@@ -206,6 +236,8 @@ public class ExploreButtonListener implements ActionListener
 					buttonMessage = "Sword";
 					//the event says that you found a sword
 					eventMessage = "Found A Sword!";
+					//Shows the player what happened was good
+					exploreButton.setBackground(Color.GREEN);
 					//stops this case
 					break;
 				//creates a default case
@@ -218,6 +250,8 @@ public class ExploreButtonListener implements ActionListener
 					buttonMessage = "Potion";
 					//sets the event message to state what happened
 					eventMessage = "Potion Found! Increase Health By: " + defaultRandomPotionAmount;
+					//Shows the player what happened was good
+					exploreButton.setBackground(Color.GREEN);
 					//stops this case
 					break;
 			}
@@ -229,6 +263,7 @@ public class ExploreButtonListener implements ActionListener
 		exploreButton.setEnabled(false);
 		//updates ui to display the event message
 		projectView.updateUI(eventMessage);
+		
 	}
 
 }

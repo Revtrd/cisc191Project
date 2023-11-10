@@ -29,6 +29,14 @@ public class ProjectView extends JFrame
 	private JLabel swordLegendLabel;
 	private JLabel swordInfoLabel;
 	private JLabel emptyLegendLabel;
+	private JLabel redLegendLabel;
+	private JLabel yellowLegendLabel;
+	private JLabel greenLegendLabel;
+	private JLabel blueLegendLabel;
+	private JLabel pinkLegendLabel;
+	private JLabel grayLegendLabel;
+	private JLabel whiteLegendLabel;
+	private JLabel spacerLegendLabel;
 	
 	public ProjectView(ProjectModel model) {
 		//sets this model to model
@@ -89,6 +97,14 @@ public class ProjectView extends JFrame
 		shieldInfoLabel = new JLabel("Shield Count: " + model.getShieldCount());
 		swordInfoLabel = new JLabel("Sword Count: " + model.getSwordCount());
 		emptyLegendLabel = new JLabel("Empty - Nothing Happens, Continue");
+		spacerLegendLabel = new JLabel("<html><br></html>");
+		redLegendLabel = new JLabel("Red - Indicates That an Event Did Damage Without Any Benefits");
+		yellowLegendLabel = new JLabel("Yellow - Indicates That You Found Treasure");
+		greenLegendLabel = new JLabel("Green - Indicates A Completely Positive Outcome");
+		blueLegendLabel = new JLabel("Blue - Indicates An Outcome With Both Positives and Negatives");
+		pinkLegendLabel = new JLabel("Pink - Indicates That An Event Had Its Damage Mitigated Without Any Other Benefits");
+		grayLegendLabel = new JLabel("Gray - Indicates That An Event Had A Neutral Outcome");
+		whiteLegendLabel = new JLabel("White - Game Is Over; Button Cannot Be Interacted With");
 		//creates a JPanel called topPanel and infoPanel
 		JPanel topPanel = new JPanel();
 		JPanel infoPanel = new JPanel();
@@ -110,7 +126,14 @@ public class ProjectView extends JFrame
 		legendPanel.add(shieldLegendLabel);
 		legendPanel.add(swordLegendLabel);
 		legendPanel.add(emptyLegendLabel);
-		
+		legendPanel.add(spacerLegendLabel);
+		legendPanel.add(redLegendLabel);
+		legendPanel.add(yellowLegendLabel);
+		legendPanel.add(greenLegendLabel);
+		legendPanel.add(blueLegendLabel);
+		legendPanel.add(pinkLegendLabel);
+		legendPanel.add(grayLegendLabel);
+		legendPanel.add(whiteLegendLabel);
 		
 		//sets the position for each jLabel
 		add(topPanel, BorderLayout.NORTH);
